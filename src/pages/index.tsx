@@ -25,7 +25,7 @@ const center = {
 
 export default function Home({ formated }: HomeProps) {
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.mapsKey
+    googleMapsApiKey: process.env.KEY
   })
 
   const options = {
