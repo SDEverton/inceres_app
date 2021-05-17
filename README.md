@@ -1,3 +1,10 @@
+## Sobre
+
+O defafio consiste em criar um front-end que consuma uma API com 5 mil localizações e disponibilize isso no mapa
+na forma de MarkerClusterer, sendo assim gerando macro regiões onde se concentra uma determinada quantidade de localizações.
+
+A aplicação foi desenvolvida usando o Google Maps, TypeScript, NextJS e para fazer a requisição foi utilizado o axios.
+
 ## Iniciando
 
 Primeiro devemos instalar as dependências e adicionar as variáveis de ambiente:
@@ -9,7 +16,6 @@ module.exports = {
     mapsKey: 'API_KEY_MAPS',
   },
 }
-
 ```
 
 ```bash
@@ -24,8 +30,8 @@ yarn dev
 
 Abra [http://localhost:3000](http://localhost:3000) para ver o resultado.
 
-# or
+ou
 
-https://desafiocontele-ilkbxg34z-sdeverton.vercel.app/
+https://desafiocontele.vercel.app/
 
 
