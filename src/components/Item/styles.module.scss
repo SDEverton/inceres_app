@@ -39,14 +39,38 @@
   }
 }
 
-.header {
+.modal {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
   margin-top: 10px;
+}
 
-  p {
-    margin-bottom: 15px;
-  }
+.buttonModal {
+  display: flex;
+  padding: 2px;
+  border-radius: 5px;
+  position: absolute;
+  top: 10px;
+  margin-left: 96%;
+  border: none;
+  background-color: var(--gray-900);
+  align-items: center;
+  justify-content: center;
+}
+
+.subItem {
+  display: flex;
+  flex: 1;
+  padding: 5px;
+  flex-direction: column;
+  overflow: auto;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.title {
+  text-align: center;
+  color: var(--gray-900);
 }

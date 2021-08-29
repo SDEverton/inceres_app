@@ -8,8 +8,6 @@ import { AddItem } from '../components/AddItem'
 
 export default function Home() {
   const [addItem, setAddItem] = useState<boolean>(false)
-  const [hiddenButton, setHiddenButton] = useState<boolean>(true)
-
   const { list, listCall } = useList()
 
   useEffect(() => {
@@ -22,16 +20,15 @@ export default function Home() {
         <AddItem goBack={() => setAddItem(!addItem)} />
       ) : (
         <>
-          {hiddenButton && (
-            <div className={styles.containerButton}>
-              <button onClick={() => setAddItem(!addItem)}>
-                <FaUserPlus size={32} color="#fff" />
-              </button>
-            </div>
-          )}
+          <div className={styles.containerButton}>
+            <button onClick={() => setAddItem(!addItem)}>
+              <FaUserPlus size={32} color="#fff" />
+            </button>
+          </div>
+
           <div className={styles.scroll}>
             {list.map((item) => (
-              <Item key={item.id} user={item} hidden={() => setHiddenButton(false)} />
+              <Item key={item.id} user={item} />
             ))}
           </div>
         </>
