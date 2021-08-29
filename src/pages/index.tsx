@@ -1,92 +1,41 @@
-import React from 'react'
-import { GetStaticProps } from 'next'
-import axios from 'axios'
-import { GoogleMap, useJsApiLoader, MarkerClusterer, Marker } from '@react-google-maps/api'
+import React, { useState, useEffect } from 'react'
+import { FaUserPlus } from 'react-icons/fa'
 
 import styles from './home.module.scss'
+import { useList } from '../hooks/Items'
+import { Item } from '../components/Item'
+import { AddItem } from '../components/AddItem'
 
-interface HomeProps {
-  formated: [
-    {
-      lat: number
-      lng: number
-      name: string
-    }
-  ]
-}
+export default function Home() {
+  const [addItem, setAddItem] = useState<boolean>(false)
+  const [hiddenButton, setHiddenButton] = useState<boolean>(true)
 
-const containerStyle = {
-  width: '100%',
-  height: '400px',
-}
+  const { list, listCall } = useList()
 
-const center = {
-  lat: -23.784721661904463,
-  lng: -46.00195680244929,
-}
+  useEffect(() => {
+    listCall()
+  }, [listCall])
 
-export default function Home({ formated }: HomeProps) {
-  const googleMapsApiKey: any = process.env.mapsKey
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey,
-  })
-
-  const options = {
-    imagePath:
-      'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m',
-  }
-
-  function createKey(location: { lat: number; lng: number; name?: string }) {
-    return location.lat + location.lng
-  }
-
-  return isLoaded ? (
+  return (
     <div className={styles.contentContainer}>
-      <>
-        {formated.length ? (
-          <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={3}>
-            <MarkerClusterer options={options}>
-              {(clusterer) =>
-                formated.map((location) => (
-                  <Marker key={createKey(location)} position={location} clusterer={clusterer} />
-                ))
-              }
-            </MarkerClusterer>
-          </GoogleMap>
-        ) : (
-          <div>
-            <h1>carregando...</h1>
+      {addItem ? (
+        <AddItem goBack={() => setAddItem(!addItem)} />
+      ) : (
+        <>
+          {hiddenButton && (
+            <div className={styles.containerButton}>
+              <button onClick={() => setAddItem(!addItem)}>
+                <FaUserPlus size={32} color="#fff" />
+              </button>
+            </div>
+          )}
+          <div className={styles.scroll}>
+            {list.map((item) => (
+              <Item key={item.id} user={item} hidden={() => setHiddenButton(false)} />
+            ))}
           </div>
-        )}
-      </>
+        </>
+      )}
     </div>
-  ) : (
-    <></>
   )
-}
-
-export const getStaticProps: GetStaticProps = async () => {
-  const { data } = await axios.get('http://images.contelege.com.br/poi.json')
-
-  if (data) {
-    const formated = data.map((item: { latitude: number; longitude: number; name: string }) => {
-      return {
-        lat: item.latitude,
-        lng: item.longitude,
-        name: item.name,
-      }
-    })
-
-    return {
-      props: {
-        formated,
-      },
-    }
-  } else {
-    return {
-      props: {
-        formated: [],
-      },
-    }
-  }
 }
