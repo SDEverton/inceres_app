@@ -31,6 +31,7 @@ const Item: React.FC<IProps> = ({ user }) => {
   const [show, setShow] = useState<boolean>(false)
   const [notes, setNotes] = useState<INote[]>([])
   const [showList, setShowList] = useState<boolean>(false)
+  const [note, setNote] = useState<INote>()
 
   const { noteCall } = useNotes()
 
@@ -69,10 +70,19 @@ const Item: React.FC<IProps> = ({ user }) => {
     }
   }
 
+  function editNote(note: INote) {
+    setNote(note)
+    setShowList(false)
+  }
+
   function actionBody(note: INote) {
     return (
       <>
-        <Button icon="pi pi-pencil" className="p-button-rounded p-button-success p-mr-2" />
+        <Button
+          icon="pi pi-pencil"
+          className="p-button-rounded p-button-success p-mr-2"
+          onClick={() => editNote(note)}
+        />
         <Button
           icon="pi pi-trash"
           className="p-button-rounded p-button-warning"
@@ -96,6 +106,13 @@ const Item: React.FC<IProps> = ({ user }) => {
     )
   }
 
+  async function goBack() {
+    const data = await noteCall(user.id)
+    setShowList(true)
+    setNote(undefined)
+    setNotes(data)
+  }
+
   const header = (
     <div className="p-d-flex p-ai-center export-buttons">
       <Button
@@ -103,7 +120,6 @@ const Item: React.FC<IProps> = ({ user }) => {
         icon="pi pi-plus"
         onClick={() => setShowList(false)}
         className="p-mr-2"
-        // data-pr-tooltip="CSV"
       />
     </div>
   )
@@ -123,7 +139,7 @@ const Item: React.FC<IProps> = ({ user }) => {
 
             {!showList ? (
               <div className={styles.subItem}>
-                <AddSubItem user={user} />
+                <AddSubItem user={user} note={note} goBack={goBack} />
               </div>
             ) : (
               <div className={styles.subItem}>
